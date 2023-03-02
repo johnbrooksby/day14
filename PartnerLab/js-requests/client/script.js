@@ -11,6 +11,8 @@
 
 // CODE HERE
 
+let sayHelloButton = document.querySelector('#say-hello-button');
+
 
 // PROBLEM 2
 /*
@@ -20,6 +22,12 @@
 */
 
 // CODE HERE
+
+function backgroundColor(){
+    sayHelloButton.classList.add("buttonColor");
+}
+
+sayHelloButton.addEventListener("mouseover", backgroundColor);
 
 
 // PROBLEM 3
@@ -32,6 +40,11 @@
 */
 
 // CODE HERE
+function backgroundDefault(){
+    sayHelloButton.classList.remove("buttonColor");
+}
+
+sayHelloButton.addEventListener("mouseout", backgroundDefault);
 
 
 // PROBLEM 4
@@ -46,13 +59,15 @@ const sayHello = () => {
     axios.get('http://localhost:3000/say-hello').then((res) => {
         let helloText = document.getElementById('hello-text');
         helloText.style.display = 'block';
-        helloText.style.backgroundColor = 'green';
+        helloText.style.backgroundColor = 'lightgreen';
         helloText.textContent = res.data;
     })
 }
 // DO NOT EDIT FUNCTION
 
 // CODE HERE
+
+sayHelloButton.addEventListener("click", sayHello);
 
 
 // PROBLEM 5 
@@ -65,9 +80,18 @@ const sayHello = () => {
     
     Handle the promise that's returned with a .then, which you should pass a callback function to. Inside the callback function, console.log the response's data (in the intermediate instructions we'll come back to this function and add HTML).
 */ 
+let baseURL = "http://localhost:3000";
 
 const ohMy = () => {
     // YOUR CODE HERE
+    
+    axios.get(`${baseURL}/animals?animals`).then(res => {
+        for(let i = 0; i < res.data.length; i++){
+            let paragraph = document.createElement("p");
+            paragraph.textContent = res.data[i]
+            document.querySelector("body").appendChild(paragraph)
+        }
+    }).catch(err => console.log({err, message: "Oh My! You crazy"}));
 }
 
 document.getElementById('animals-button').addEventListener('click', ohMy)
@@ -88,7 +112,15 @@ document.getElementById('animals-button').addEventListener('click', ohMy)
 
 const repeatMyParam = () => {
     //YOUR CODE HERE
+    const repeatText = document.querySelector("#repeat-text");
+    axios.get(`${baseURL}/repeat/JohnIsGreat`).then((callback) => {
+        console.log(callback.data);
+        repeatText.textContent = callback.data;
+        repeatText.style = block;
+    }).catch(err => console.log({err, message: "You suck"}))
 }
+
+document.querySelector("#repeat-button").addEventListener("click", repeatMyParam)
 
 // PROBLEM 7
 /*
@@ -101,7 +133,7 @@ const repeatMyParam = () => {
 
 // Code in the repeatMyParam function above
 
-
+// DONE DONE DONE DONE
 
 // PROBLEM 8
 /*
@@ -113,6 +145,14 @@ const repeatMyParam = () => {
 */
 
 // CODE HERE
+
+function queryTest (){
+    axios.get(`${baseURL}/query-test?res=query-test`).then(res =>{
+        console.log(res.data);
+    }).catch(err => console.log({err, message: "You should try doing it right"}));
+}
+
+document.querySelector("#query-button").addEventListener("click", queryTest)
 
 
 
@@ -166,3 +206,24 @@ const repeatMyParam = () => {
 */
 
 // CODE HERE 
+
+let list = document.querySelector("ul");
+let input = document.querySelector("input");
+let form = document.querySelector("form");
+
+function createFood (event){
+    event.preventDefault();
+    let foodInput = Object.create{
+        newFood: input.value
+    }
+    axios.post(`${baseURL}/food`, body).then(result => {
+        result.data.forEach(element => 
+            
+        });
+    })
+    // let foodInput = document.createElement("li");
+    // foodInput.texContent = input.value;
+    // list.appendChild(foodInput);
+}
+
+form.addEventListener("submit", createFood);
